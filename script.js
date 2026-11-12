@@ -10,18 +10,17 @@ function showDashboard(){ if(!currentUser) currentUser=JSON.parse(localStorage.g
 function logout(){ localStorage.removeItem('damiluxa_current'); currentUser=null; document.getElementById('landing').style.display='block'; document.getElementById('dashboard').style.display='none'; document.getElementById('authBtns').style.display='inline'; document.getElementById('dashBtns').style.display='none'; }
 function quickMode(m){ setMode(m); showDashboard(); }
 function setMode(m){ mode=m; document.querySelectorAll('.modes button').forEach(b=>b.classList.remove('active')); document.getElementById('btn-'+m).classList.add('active'); }
-// PAYSTACK
 function isPremium(){ return localStorage.getItem('damiluxa_premium_'+(currentUser?currentUser.email:''))==='yes'; }
 function updatePlanText(){ let el=document.getElementById('planText'); if(el) el.innerText = isPremium() ? 'Plan: PREMIUM ⭐ Unlimited' : 'Plan: FREE (5 chats)'; }
 function payPremium(){
   if(!currentUser) return openAuth('signup');
-  // REPLACE pk_test_xxx WITH YOUR PAYSTACK PUBLIC KEY
-  let handler=PaystackPop.setup({ key:'pk_test_xxxxxxxxxxxxxxxx', email:currentUser.email, amount:100000, currency:'NGN', ref:''+Math.floor(Math.random()*1000000000), onClose:function(){ alert('Payment cancelled'); }, callback:function(res){ localStorage.setItem('damiluxa_premium_'+currentUser.email,'yes'); updatePlanText(); alert('Payment successful! Welcome to PREMIUM ⭐'); } });
+  // PUT YOUR REAL PAYSTACK KEY HERE - go to paystack.com > Settings > API Keys > copy Public Key wey start with pk_
+  let PAYSTACK_KEY = 'pk_test_xxxxxxxxxxxxxxxx'; // <-- Change this to your own pk_ key
+  let handler=PaystackPop.setup({ key:PAYSTACK_KEY, email:currentUser.email, amount:100000, currency:'NGN', ref:''+Math.floor(Math.random()*1000000000), onClose:function(){ alert('Payment cancelled'); }, callback:function(res){ localStorage.setItem('damiluxa_premium_'+currentUser.email,'yes'); updatePlanText(); alert('Payment successful! Welcome to PREMIUM ⭐'); } });
   handler.openIframe();
 }
 async function sendMsg(){
   let input=document.getElementById('userInput'); let text=input.value.trim(); if(!text) return;
-  // FREE LIMIT CHECK
   let key='hist_'+currentUser.email; let arr=JSON.parse(localStorage.getItem(key)||'[]');
   if(!isPremium() && arr.length>=5){ if(confirm('Free 5 chats don finish! Upgrade to Premium ₦1,000 to continue?')) payPremium(); return; }
   let chat=document.getElementById('chat');
@@ -37,11 +36,17 @@ async function getRealAIReply(text){
   if(low==='hi'||low==='hello'||low==='hey'||low==='good morning'||low==='good afternoon') return `Hello ${currentUser?currentUser.name:''} 👋 Welcome!\n\nI fit help you with:\n✍️ Content - "give me content idea for hair"\n📚 Study - click Study, type topic\n💼 Business - click Business, type your business\n\nTry am now!`;
   try{
     let prompt=`You are DAMILUXA AI, a friendly Nigerian AI assistant for content, study and business. Mode: ${mode}. User asks: ${text}. Answer in simple, helpful, Nigerian-friendly style with steps and example. Keep it under 300 words.`;
-    let res=await fetch('https://text.pollinations.ai/'+encodeURIComponent(prompt));
+    // Add small random thing so Pollinations no think say na same person dey rush am
+    let res=await fetch('https://text.pollinations.ai/'+encodeURIComponent(prompt)+'?t='+Date.now());
     let data=await res.text();
-    if(data && data.length>20) return data;
-  }catch(e){}
-  return getSmartReply(text); // fallback if internet fails
+    // If seller shout Rate Limit, no show wahala, give smart reply
+    if(!data || data.length<20 || data.toLowerCase().includes('rate limit') || data.toLowerCase().includes('too many')) {
+      return getSmartReply(text) + "\n\n(Ps: Free AI dey busy small, try again in 1 minute for real AI ✨)";
+    }
+    return data;
+  }catch(e){
+    return getSmartReply(text);
+  }
 }
 function copyReply(){ if(!lastReply) return alert('No reply yet'); navigator.clipboard.writeText(lastReply).then(()=>alert('Copied! ✅')); }
 function speakReply(){ if(!lastReply) return alert('No reply yet'); window.speechSynthesis.cancel(); window.speechSynthesis.speak(new SpeechSynthesisUtterance(lastReply)); }
