@@ -81,5 +81,36 @@
   <button onclick="closeAuth()">Close</button>
 </div></div>
 <script src="script.js"></script>
+  <!-- DAMILUXA VLOG STUDIO -->
+<section style="padding:40px 20px; background:#fff0f5; text-align:center;">
+<h2>🎬 Damiluxa Vlog Studio</h2>
+<p>Stuck on what to post? Pick your vibe, get ideas + script!</p>
+
+<select id="vlogType" style="padding:12px; border-radius:20px; width:90%; max-width:400px;">
+<option value="day">Day In My Life</option>
+<option value="school">School / Uni Vlog</option>
+<option value="grwm">GRWM Vlog</option>
+<option value="reset">Sunday Reset</option>
+<option value="travel">Travel / Lagos Vlog</option>
+</select>
+<br><br>
+<button onclick="getVlog()" style="padding:14px 30px; background:#ff2e88; color:white; border:none; border-radius:30px; font-weight:bold;">Get My Vlog Ideas ✨</button>
+
+<div id="vlogResult" style="margin-top:20px; text-align:left; background:white; padding:20px; border-radius:20px; max-width:500px; margin-left:auto; margin-right:auto;"></div>
+</section>
+
+<script>
+function getVlog(){
+let t = document.getElementById("vlogType").value;
+let ideas = {
+day: "<b>HOOK:</b> Come spend a chaotic day with me, it did NOT go as planned...<br><br><b>10 IDEAS:</b><br>1. Morning routine + breakfast<br>2. Getting ready + outfit<br>3. Going to class / work<br>4. Lunch with friends<br>5. Evening reset<br><br><b>SCRIPT:</b> Hey guys welcome back! Today is a day in my life, let's go...<br><br><b>CAPTION:</b> A day in my life as a Lagos girl ✨ #vlog #dayinmylife",
+school: "<b>HOOK:</b> Come to school with me, I almost missed my class...<br><br><b>10 IDEAS:</b><br>1. Morning prep<br>2. My bag + what I carry<br>3. Classes + friends<br>4. Lunch break gist<br>5. After school routine<br><br><b>SCRIPT:</b> Hey besties, today you are following me to school...<br><br><b>CAPTION:</b> School vlog 🎒 #schoolvlog #unilife",
+grwm: "<b>HOOK:</b> Get ready with me for the craziest party...<br><br><b>10 IDEAS:</b><br>1. Skin prep<br>2. Makeup look<br>3. Hair<br>4. Outfit reveal<br>5. Final look + perfume<br><br><b>SCRIPT:</b> Hey guys, GRWM with me, I have somewhere special...<br><br><b>CAPTION:</b> GRWM ✨ #grwm #makeup",
+reset: "<b>HOOK:</b> My life was a mess so I'm resetting everything...<br><br><b>10 IDEAS:</b><br>1. Cleaning my room<br>2. Skincare + shower<br>3. Planning my week<br>4. Cooking<br>5. Journaling<br><br><b>SCRIPT:</b> Welcome to my Sunday reset, we need to get our lives together...<br><br><b>CAPTION:</b> Sunday reset 🧸 #reset #selfcare",
+travel: "<b>HOOK:</b> Come with me to Lekki, you won't believe what happened...<br><br><b>10 IDEAS:</b><br>1. Packing<br>2. On the road<br>3. Food spots<br>4. Exploring<br>5. Night vibes<br><br><b>SCRIPT:</b> Guys, we are going on a trip! Come with me...<br><br><b>CAPTION:</b> Lagos vlog 🌴 #lagos #travelvlog"
+};
+document.getElementById("vlogResult").innerHTML = ideas[t];
+}
+</script>
 </body>
 </html>
