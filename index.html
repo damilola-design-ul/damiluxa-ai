@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DAMILUXA AI</title>
+<link rel="stylesheet" href="style.css">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#6a00ff">
+<script src="https://js.paystack.co/v1/inline.js"></script>
+</head>
+<body>
+<header>
+  <div class="logo">DAMILUXA AI</div>
+  <div id="headerBtns">
+    <button onclick="toggleTheme()">🌙 Dark</button>
+    <span id="authBtns"><button onclick="openAuth('login')">Login</button> <button class="primary" onclick="openAuth('signup')">Sign Up Free</button></span>
+    <span id="dashBtns" style="display:none"><button onclick="showDashboard()">Dashboard</button> <button onclick="logout()">Logout</button></span>
+  </div>
+</header>
+<div id="landing">
+  <div class="hero">
+    <h1>Create Something Amazing</h1>
+    <p>Your AI for Content, Study & Business. Real AI, Real Results.</p>
+    <button class="btn-purple" onclick="openAuth('signup')">Start Creating Free</button>
+    <p>10K+ Happy Users | 50K+ Content Created</p>
+    <div class="features">
+      <div onclick="quickMode('content')">✍️ Content</div>
+      <div onclick="quickMode('study')">📚 Study</div>
+      <div onclick="quickMode('business')">💼 Business</div>
+    </div>
+  </div>
+  <div class="section">
+    <h2>⭐ What People Dey Talk</h2>
+    <div class="cards">
+      <div class="card">"DAMILUXA help me write my advert, sales don double!"<br><b>- Ada, Lagos</b></div>
+      <div class="card">"I use am for my school work, e dey explain like teacher!"<br><b>- Tobi, Abuja</b></div>
+      <div class="card">"Best AI for small business for Nigeria!"<br><b>- Chiamaka, Enugu</b></div>
+    </div>
+  </div>
+  <div class="section">
+    <h2>💰 Pricing</h2>
+    <div class="cards">
+      <div class="card"><h3>FREE</h3><p>5 Chats<br>Copy + Voice + WhatsApp</p><button class="primary" onclick="openAuth('signup')">Start Free</button></div>
+      <div class="card hot"><h3>PREMIUM - ₦1,000/mo</h3><p>Unlimited Chats<br>Real AI Brain<br>Priority Support</p><button class="primary" onclick="payPremium()">Pay with Paystack</button></div>
+    </div>
+  </div>
+  <div class="section">
+    <h2>❓ FAQ</h2>
+    <p><b>Is it free?</b> Yes, first 5 chats free.</p>
+    <p><b>How do I pay?</b> Click Premium, pay with card / transfer via Paystack.</p>
+    <p><b>Can I install am?</b> Yes, click Add to Home Screen for phone.</p>
+  </div>
+</div>
+<div id="dashboard">
+  <div class="dash-top">
+    <h2 id="welcomeText">Welcome 👋</h2>
+    <button onclick="toggleTheme()">🌙 Dark / ☀️ Light</button>
+  </div>
+  <p id="countText">You have created 0 contents.</p>
+  <p id="planText" style="font-weight:bold;color:#6a00ff">Plan: FREE (5 chats)</p>
+  <div class="modes">
+    <button id="btn-content" class="active" onclick="setMode('content')">✍️ Content</button>
+    <button id="btn-study" onclick="setMode('study')">📚 Study</button>
+    <button id="btn-business" onclick="setMode('business')">💼 Business</button>
+  </div>
+  <div id="chat"></div>
+  <div class="input-row">
+    <input id="userInput" placeholder="Ask DAMILUXA anything..." onkeydown="if(event.key==='Enter') sendMsg()">
+    <button class="primary" onclick="sendMsg()">Send</button>
+  </div>
+  <button onclick="payPremium()" style="margin-top:10px;background:gold;color:black">⭐ Upgrade to Premium - ₦1,000</button>
+  <div class="history"><h3>Your History</h3><div id="historyList">No history yet</div><button onclick="clearHistory()" style="margin-top:10px">Clear History</button></div>
+</div>
+<div class="modal" id="authModal"><div class="modal-content">
+  <h2 id="authTitle">Sign Up</h2>
+  <input id="authName" placeholder="Full Name"><input id="authEmail" placeholder="Email"><input id="authPass" type="password" placeholder="Password">
+  <button class="primary" onclick="doAuth()">Continue</button>
+  <p style="text-align:center;font-size:14px"><span onclick="switchAuth()" style="color:#6a00ff;cursor:pointer" id="switchText">Already have account? Login</span></p>
+  <p style="text-align:center;font-size:13px"><span onclick="forgotPassword()" style="color:red;cursor:pointer">Forgot Password? Click here</span></p>
+  <button onclick="closeAuth()">Close</button>
+</div></div>
+<script src="script.js"></script>
+</body>
+</html>
